@@ -29,10 +29,10 @@ export default function OnboardingPage({ onComplete }) {
     return (
       <div className="onboarding-wrap">
         <div className="onboarding-hero">
-          <div className="onboarding-drop" />
-          <h1 className="onboarding-title">Hydrate</h1>
+          <div className="onboarding-spirit-preview" />
+          <h1 className="onboarding-title">Pour Decisions</h1>
           <p className="onboarding-subtitle">
-            Track your water intake, hit your daily goal, and stay on top of your health.
+            Meet your water spirit. Keep them happy and glowy by drinking water. Neglect them and face the consequences.
           </p>
         </div>
         <ProfileSetup onSave={handleProfileSave} submitLabel="Calculate my goal" />
