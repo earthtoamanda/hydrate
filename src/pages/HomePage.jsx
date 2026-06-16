@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import WaterSpirit from '../components/creature/WaterSpirit'
 import QuickAdd from '../components/logger/QuickAdd'
 import CustomInput from '../components/logger/CustomInput'
@@ -37,19 +37,21 @@ export default function HomePage() {
   const { logs, totalOz, addEntry, removeEntry, refresh } = useTodayLog()
   const [activeModifiers, setActiveModifiers] = useState(() => getTodayModifiers())
   const [showRain, setShowRain] = useState(false)
-  const [prevMet, setPrevMet] = useState(false)
+  const prevMetRef = useRef(false)
 
   const { totalGoalOz, baseGoalOz, bonusOz } = calculateDailyGoal(profile || {}, activeModifiers)
   const pct = totalGoalOz > 0 ? totalOz / totalGoalOz : 0
   const goalMet = totalOz >= totalGoalOz && totalGoalOz > 0
 
-  if (goalMet && !prevMet) {
-    setPrevMet(true)
-    setShowRain(true)
-    setTimeout(() => setShowRain(false), 3200)
-  } else if (!goalMet && prevMet) {
-    setPrevMet(false)
-  }
+  useEffect(() => {
+    if (goalMet && !prevMetRef.current) {
+      prevMetRef.current = true
+      setShowRain(true)
+      setTimeout(() => setShowRain(false), 3200)
+    } else if (!goalMet) {
+      prevMetRef.current = false
+    }
+  }, [goalMet])
 
   const handleModifiersChange = useCallback(async (newIds) => {
     saveTodayModifiers(newIds)
