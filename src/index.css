@@ -243,16 +243,7 @@ body {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   border: 1px solid rgba(221,213,200,0.8);
-  overflow: hidden;
   position: relative;
-}
-
-.spirit-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 50% 0%, rgba(122,181,160,0.12) 0%, transparent 70%);
-  pointer-events: none;
 }
 
 /* ── Spirit oz display ─────────────────────────────────── */

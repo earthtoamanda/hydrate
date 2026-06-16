@@ -1,11 +1,12 @@
 const STATES = {
   parched: {
-    size: 88,
-    color: '#b8b0a4',
-    gradient: ['#c4bab0', '#aba099'],
-    glow: 'none',
-    floatSpeed: 0,
-    morphSpeed: 7,
+    size: 130,
+    bodyColor: '#c4bab0',
+    bodyColor2: '#aba099',
+    eyeColor: '#6b5e55',
+    glowColor: null,
+    morphDur: '7s',
+    floatDur: null,
     messages: [
       "No water yet? I'm basically dust.",
       "I'm shriveling. Hello??",
@@ -14,12 +15,13 @@ const STATES = {
     ],
   },
   thirsty: {
-    size: 108,
-    color: '#a8cfc0',
-    gradient: ['#b8d8ca', '#98c0b0'],
-    glow: 'none',
-    floatSpeed: 5,
-    morphSpeed: 5.5,
+    size: 150,
+    bodyColor: '#b8d8ca',
+    bodyColor2: '#8fbfad',
+    eyeColor: '#3d6b5a',
+    glowColor: null,
+    morphDur: '5.5s',
+    floatDur: '5s',
     messages: [
       "I'm withering over here...",
       "Starting to feel like a raisin.",
@@ -28,12 +30,13 @@ const STATES = {
     ],
   },
   okay: {
-    size: 128,
-    color: '#7ab5a0',
-    gradient: ['#88c0a8', '#6aa090'],
-    glow: 'rgba(122,181,160,0.25)',
-    floatSpeed: 4,
-    morphSpeed: 4,
+    size: 170,
+    bodyColor: '#88c0a8',
+    bodyColor2: '#5fa085',
+    eyeColor: '#2d4a3e',
+    glowColor: 'rgba(122,181,160,0.3)',
+    morphDur: '4s',
+    floatDur: '4s',
     messages: [
       "Getting there. Keep going!",
       "Not bad, not great. Middle ground.",
@@ -42,12 +45,13 @@ const STATES = {
     ],
   },
   happy: {
-    size: 150,
-    color: '#5a9fd4',
-    gradient: ['#6aaee0', '#4a90c8'],
-    glow: 'rgba(90,159,212,0.35)',
-    floatSpeed: 2.8,
-    morphSpeed: 3,
+    size: 190,
+    bodyColor: '#6aaee0',
+    bodyColor2: '#3a88c8',
+    eyeColor: '#1a3a6a',
+    glowColor: 'rgba(90,159,212,0.4)',
+    morphDur: '3s',
+    floatDur: '2.8s',
     messages: [
       "YES. Feed me more!",
       "Now we're TALKING.",
@@ -56,12 +60,13 @@ const STATES = {
     ],
   },
   elated: {
-    size: 170,
-    color: '#4fc3f7',
-    gradient: ['#62ceff', '#38b0e8'],
-    glow: 'rgba(79,195,247,0.5)',
-    floatSpeed: 2,
-    morphSpeed: 2.2,
+    size: 210,
+    bodyColor: '#62ceff',
+    bodyColor2: '#28a8e8',
+    eyeColor: '#0a2a5a',
+    glowColor: 'rgba(79,195,247,0.5)',
+    morphDur: '2.2s',
+    floatDur: '2s',
     messages: [
       "I'm THRIVING. Thank you!!",
       "Perfectly hydrated. I am unstoppable.",
@@ -79,126 +84,157 @@ function getState(pct) {
   return 'elated'
 }
 
-function SpiritFace({ state }) {
-  const strokeColor = state === 'parched' ? '#8a8078' : '#2d4a3e'
-
-  const eyes = {
-    parched: (
-      <>
-        <line x1="34" y1="43" x2="43" y2="38" strokeWidth="2.5" />
-        <line x1="57" y1="38" x2="66" y2="43" strokeWidth="2.5" />
-      </>
-    ),
-    thirsty: (
-      <>
-        <line x1="34" y1="42" x2="46" y2="42" strokeWidth="2.5" />
-        <line x1="54" y1="42" x2="66" y2="42" strokeWidth="2.5" />
-      </>
-    ),
-    okay: (
-      <>
-        <circle cx="40" cy="42" r="3" fill={strokeColor} stroke="none" />
-        <circle cx="60" cy="42" r="3" fill={strokeColor} stroke="none" />
-      </>
-    ),
-    happy: (
-      <>
-        <path d="M34 45 Q40 37 46 45" strokeWidth="2.5" />
-        <path d="M54 45 Q60 37 66 45" strokeWidth="2.5" />
-      </>
-    ),
-    elated: (
-      <>
-        <path d="M33 46 Q40 35 47 46" strokeWidth="3" />
-        <path d="M53 46 Q60 35 67 46" strokeWidth="3" />
-        <circle cx="38" cy="34" r="2" fill="white" opacity="0.8" stroke="none" />
-        <circle cx="58" cy="34" r="2" fill="white" opacity="0.8" stroke="none" />
-      </>
-    ),
-  }
-
-  const mouths = {
-    parched: <path d="M40 60 Q50 55 60 60" strokeWidth="2" />,
-    thirsty: <line x1="42" y1="59" x2="58" y2="59" strokeWidth="2" />,
-    okay: <path d="M42 58 Q50 62 58 58" strokeWidth="2" />,
-    happy: <path d="M39 56 Q50 66 61 56" strokeWidth="2.5" />,
-    elated: <path d="M37 55 Q50 68 63 55" strokeWidth="3" />,
-  }
-
+function Eyes({ state, color }) {
+  if (state === 'parched') return (
+    <>
+      <line x1="36" y1="45" x2="44" y2="40" stroke={color} strokeWidth="3" strokeLinecap="round" />
+      <line x1="56" y1="40" x2="64" y2="45" stroke={color} strokeWidth="3" strokeLinecap="round" />
+    </>
+  )
+  if (state === 'thirsty') return (
+    <>
+      <line x1="35" y1="43" x2="46" y2="43" stroke={color} strokeWidth="3" strokeLinecap="round" />
+      <line x1="54" y1="43" x2="65" y2="43" stroke={color} strokeWidth="3" strokeLinecap="round" />
+    </>
+  )
+  if (state === 'okay') return (
+    <>
+      <circle cx="40" cy="43" r="3.5" fill={color} />
+      <circle cx="60" cy="43" r="3.5" fill={color} />
+    </>
+  )
+  if (state === 'happy') return (
+    <>
+      <path d="M34 46 Q40 37 46 46" stroke={color} strokeWidth="3" fill="none" strokeLinecap="round" />
+      <path d="M54 46 Q60 37 66 46" stroke={color} strokeWidth="3" fill="none" strokeLinecap="round" />
+    </>
+  )
   return (
-    <svg
-      viewBox="0 0 100 100"
-      style={{ position: 'absolute', inset: '12% 8%', width: '84%', height: '84%' }}
-    >
-      <g fill="none" stroke={strokeColor} strokeLinecap="round" strokeLinejoin="round">
-        {eyes[state]}
-        {mouths[state]}
-      </g>
-    </svg>
+    <>
+      <path d="M33 47 Q40 35 47 47" stroke={color} strokeWidth="3.5" fill="none" strokeLinecap="round" />
+      <path d="M53 47 Q60 35 67 47" stroke={color} strokeWidth="3.5" fill="none" strokeLinecap="round" />
+      <circle cx="38" cy="34" r="2.5" fill="white" opacity="0.7" />
+      <circle cx="58" cy="34" r="2.5" fill="white" opacity="0.7" />
+    </>
   )
 }
 
-function Sparkle({ x, y, size, delay }) {
+function Mouth({ state, color }) {
+  if (state === 'parched') return (
+    <path d="M40 60 Q50 55 60 60" stroke={color} strokeWidth="2.5" fill="none" strokeLinecap="round" />
+  )
+  if (state === 'thirsty') return (
+    <line x1="42" y1="59" x2="58" y2="59" stroke={color} strokeWidth="2.5" strokeLinecap="round" />
+  )
+  if (state === 'okay') return (
+    <path d="M42 58 Q50 63 58 58" stroke={color} strokeWidth="2.5" fill="none" strokeLinecap="round" />
+  )
+  if (state === 'happy') return (
+    <path d="M38 56 Q50 67 62 56" stroke={color} strokeWidth="3" fill="none" strokeLinecap="round" />
+  )
   return (
-    <div
-      style={{
-        position: 'absolute',
-        left: x,
-        top: y,
-        width: size,
-        height: size,
-        background: 'white',
-        borderRadius: '50%',
-        opacity: 0,
-        animation: `spiritSparkle 1.6s ${delay}s ease-in-out infinite`,
-      }}
-    />
+    <path d="M36 55 Q50 70 64 55" stroke={color} strokeWidth="3.5" fill="none" strokeLinecap="round" />
   )
 }
 
 export default function WaterSpirit({ pct }) {
   const state = getState(pct)
-  const config = STATES[state]
+  const c = STATES[state]
   const day = new Date().getDate()
-  const msg = config.messages[day % config.messages.length]
-
-  const floatStyle = config.floatSpeed > 0
-    ? { animation: `spiritFloat ${config.floatSpeed}s ease-in-out infinite, spiritMorph ${config.morphSpeed}s ease-in-out infinite` }
-    : { animation: `spiritMorphSlow ${config.morphSpeed}s ease-in-out infinite` }
-
-  const glowStyle = config.glow !== 'none'
-    ? { boxShadow: `0 0 30px ${config.glow}, 0 8px 24px ${config.glow}` }
-    : {}
-
-  const sparkles = state === 'elated'
-    ? [
-        { x: '-18%', y: '10%', size: 7, delay: 0 },
-        { x: '105%', y: '20%', size: 5, delay: 0.4 },
-        { x: '-12%', y: '65%', size: 4, delay: 0.8 },
-        { x: '108%', y: '60%', size: 6, delay: 0.2 },
-        { x: '30%', y: '-15%', size: 5, delay: 0.6 },
-        { x: '65%', y: '-12%', size: 4, delay: 1.0 },
-      ]
-    : []
+  const msg = c.messages[day % c.messages.length]
+  const gradId = `sg_${state}`
 
   return (
-    <div className="spirit-container">
-      <div
-        className={`spirit-blob spirit-${state}`}
-        style={{
-          width: config.size,
-          height: config.size,
-          background: `linear-gradient(135deg, ${config.gradient[0]}, ${config.gradient[1]})`,
-          position: 'relative',
-          ...floatStyle,
-          ...glowStyle,
-          transition: 'width 0.8s cubic-bezier(0.34,1.56,0.64,1), height 0.8s cubic-bezier(0.34,1.56,0.64,1), background 0.8s ease',
-        }}
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '24px 16px 8px', position: 'relative' }}>
+      {c.glowColor && (
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -60%)',
+          width: c.size * 1.4,
+          height: c.size * 1.4,
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${c.glowColor} 0%, transparent 70%)`,
+          pointerEvents: 'none',
+          zIndex: 0,
+        }} />
+      )}
+
+      <svg
+        width={c.size}
+        height={c.size}
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ overflow: 'visible', display: 'block', position: 'relative', zIndex: 1 }}
       >
-        <SpiritFace state={state} />
-        {sparkles.map((s, i) => <Sparkle key={i} {...s} />)}
-      </div>
-      <p className="spirit-message">"{msg}"</p>
+        <defs>
+          <radialGradient id={gradId} cx="38%" cy="32%" r="65%">
+            <stop offset="0%" stopColor={c.bodyColor} />
+            <stop offset="100%" stopColor={c.bodyColor2} />
+          </radialGradient>
+        </defs>
+
+        <g>
+          {c.floatDur && (
+            <animateTransform
+              attributeName="transform"
+              type="translate"
+              values="0 0; 0 -12; 0 0"
+              keyTimes="0; 0.5; 1"
+              dur={c.floatDur}
+              repeatCount="indefinite"
+              calcMode="spline"
+              keySplines="0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95"
+            />
+          )}
+
+          <ellipse cx="50" cy="55" rx="36" ry="34" fill={`url(#${gradId})`}>
+            <animate attributeName="rx" values="36;32;38;30;36" dur={c.morphDur} repeatCount="indefinite" />
+            <animate attributeName="ry" values="34;38;30;36;34" dur={c.morphDur} repeatCount="indefinite" />
+            <animate attributeName="cy" values="55;53;57;54;55" dur={c.morphDur} repeatCount="indefinite" />
+          </ellipse>
+
+          <Eyes state={state} color={c.eyeColor} />
+          <Mouth state={state} color={c.eyeColor} />
+
+          {state === 'elated' && (
+            <>
+              <circle cx="22" cy="30" r="3" fill={c.bodyColor} opacity="0">
+                <animate attributeName="opacity" values="0;0.8;0" dur="1.4s" repeatCount="indefinite" begin="0s" />
+                <animate attributeName="cy" values="30;22;30" dur="1.4s" repeatCount="indefinite" begin="0s" />
+              </circle>
+              <circle cx="78" cy="28" r="2.5" fill={c.bodyColor} opacity="0">
+                <animate attributeName="opacity" values="0;0.8;0" dur="1.6s" repeatCount="indefinite" begin="0.3s" />
+                <animate attributeName="cy" values="28;20;28" dur="1.6s" repeatCount="indefinite" begin="0.3s" />
+              </circle>
+              <circle cx="15" cy="55" r="2" fill={c.bodyColor2} opacity="0">
+                <animate attributeName="opacity" values="0;0.7;0" dur="1.2s" repeatCount="indefinite" begin="0.6s" />
+              </circle>
+              <circle cx="85" cy="60" r="3" fill={c.bodyColor} opacity="0">
+                <animate attributeName="opacity" values="0;0.8;0" dur="1.8s" repeatCount="indefinite" begin="0.9s" />
+                <animate attributeName="cy" values="60;52;60" dur="1.8s" repeatCount="indefinite" begin="0.9s" />
+              </circle>
+            </>
+          )}
+        </g>
+      </svg>
+
+      <p style={{
+        fontSize: 15,
+        color: 'var(--text-muted)',
+        fontStyle: 'italic',
+        fontWeight: 600,
+        marginTop: 16,
+        textAlign: 'center',
+        maxWidth: 260,
+        lineHeight: 1.5,
+        fontFamily: 'Nunito, sans-serif',
+        position: 'relative',
+        zIndex: 1,
+      }}>
+        "{msg}"
+      </p>
     </div>
   )
 }
